@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: boardgamez-mysql
+    image: mysql:latest
+    restart: always
+    volumes:
+      - ~/docker/boardgames/mysql:/var/lib/mysql
+    env_file: .env
+    networks:
+      - boardgamez
+
+  wordpress:
+    container_name: boardgamez-wordpress
+    depends_on:
+      - mysql
+    image: wordpress:latest
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ~/docker/boardgames/wordpress:/var/www/html
+    env_file: .env
+    networks:
+      - boardgamez
+
+networks:
+  boardgamez:
